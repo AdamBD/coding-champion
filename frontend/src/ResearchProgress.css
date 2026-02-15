@@ -1,0 +1,189 @@
+.research-progress-container {
+  padding: 2rem;
+  background: var(--bg-panel);
+  border: 2px solid var(--border-primary);
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+.research-progress-section {
+  margin-bottom: 2rem;
+}
+
+.research-progress-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+}
+
+.research-progress-bar-container {
+  width: 100%;
+  height: 30px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.research-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-xp), var(--color-level));
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.research-progress-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  color: var(--bg-primary);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.research-progress-status {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+.clicker-game-section {
+  border-top: 2px solid var(--border-primary);
+  padding-top: 1.5rem;
+}
+
+.clicker-game-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  color: var(--color-streak);
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.clicker-game-instruction {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+  font-family: 'Courier New', monospace;
+}
+
+.clicker-progress-bar-container {
+  width: 100%;
+  height: 40px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.clicker-progress-bar {
+  height: 100%;
+  transition: width 0.1s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.clicker-progress-bar.high {
+  background: linear-gradient(90deg, #00ff00, #00cc00);
+}
+
+.clicker-progress-bar.medium {
+  background: linear-gradient(90deg, #ffa500, #ff8800);
+}
+
+.clicker-progress-bar.low {
+  background: linear-gradient(90deg, #ff4444, #cc0000);
+  animation: warning-pulse 0.5s infinite;
+}
+
+@keyframes warning-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.clicker-progress-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  color: var(--bg-primary);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  font-weight: bold;
+}
+
+.clicker-button {
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-xp);
+  border: 2px solid var(--border-accent);
+  color: var(--bg-primary);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.1s;
+  position: relative;
+}
+
+.clicker-button:hover:not(:disabled) {
+  background: var(--color-level);
+  transform: scale(1.02);
+}
+
+.clicker-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.clicker-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clicker-button-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.confetti-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  top: 50%;
+  border-radius: 2px;
+  animation: confetti-burst 1s ease-out forwards;
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: translateY(-50%) translateX(-50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) translateX(calc(-50% + var(--offset-x, 0px))) scale(0) rotate(720deg);
+    opacity: 0;
+  }
+}
+
