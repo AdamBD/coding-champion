@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.production.local
+
+# Build outputs
+*/dist/
+*/.output/
+*/.nitro/
+
+# Database exports (don't commit sensitive data)
+backend/data-export.sql
+
+# OS files
+.DS_Store
