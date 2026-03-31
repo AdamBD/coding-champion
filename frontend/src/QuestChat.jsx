@@ -2,8 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import './QuestChat.css'
 import ResearchProgress from './ResearchProgress'
 import QuestPreview from './QuestPreview'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+import { API_BASE_URL, useAuthFetch } from './utils/api'
 
 /**
  * Try to parse quest JSON from message content
@@ -29,6 +28,7 @@ function parseQuestJson(content) {
 }
 
 function QuestChat({ onBack }) {
+  const authFetch = useAuthFetch()
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -60,7 +60,7 @@ function QuestChat({ onBack }) {
 
   const fetchChats = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/quest-chats`)
+      const response = await authFetch(`${API_BASE_URL}/quest-chats`)
       const data = await response.json()
       if (!data.error) {
         setChats(data.chats || [])
@@ -80,7 +80,7 @@ function QuestChat({ onBack }) {
     setLoading(true)
     console.log('[QuestChat] Loading chat history for session:', sid)
     try {
-      const response = await fetch(`${API_BASE_URL}/quest-chats/${sid}`)
+      const response = await authFetch(`${API_BASE_URL}/quest-chats/${sid}`)
       const data = await response.json()
       
       if (data.error) {
@@ -184,11 +184,8 @@ function QuestChat({ onBack }) {
     setMessages(newMessages)
 
     try {
-      const response = await fetch(`${API_BASE_URL}/quest-chat`, {
+      const response = await authFetch(`${API_BASE_URL}/quest-chat`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           message: userMessage,
           session_id: sessionId,
@@ -336,11 +333,8 @@ function QuestChat({ onBack }) {
                   onSave={async () => {
                     try {
                       setLoading(true)
-                      const response = await fetch(`${API_BASE_URL}/quests`, {
+                      const response = await authFetch(`${API_BASE_URL}/quests`, {
                         method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
                         body: JSON.stringify({
                           quest: questJson,
                           session_id: sessionId,

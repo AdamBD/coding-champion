@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import './ResearchProgress.css'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+import { API_BASE_URL, useAuthFetch } from './utils/api'
 
 function ResearchProgress({ sessionId, interactionId, onComplete }) {
+  const authFetch = useAuthFetch()
   const [researchProgress, setResearchProgress] = useState(10)
   const [researchStatus, setResearchStatus] = useState('running')
   const [clickerProgress, setClickerProgress] = useState(100)
@@ -28,7 +28,7 @@ function ResearchProgress({ sessionId, interactionId, onComplete }) {
 
       try {
         // Read status from database (backend updates this)
-        const response = await fetch(
+        const response = await authFetch(
           `${API_BASE_URL}/quest-chat-progress?session_id=${sessionId}&interaction_id=${interactionId}`
         )
         const data = await response.json()

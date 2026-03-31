@@ -1,3 +1,10 @@
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .app {
   max-width: 1000px;
   margin: 0 auto;
@@ -66,6 +73,32 @@ header h1 {
 
 .main-nav {
   margin-top: 1rem;
+}
+
+.user-section {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-button {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.user-button:hover {
+  background: var(--bg-panel);
+  border-color: var(--border-secondary);
 }
 
 .main-nav button {

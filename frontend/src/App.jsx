@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
+import { SignedIn, SignedOut, SignIn, useUser, useClerk } from '@clerk/clerk-react'
 import './App.css'
 import Quests from './Quests'
 import QuestDetail from './QuestDetail'
 import QuestChat from './QuestChat'
+import { API_BASE_URL, useAuthFetch } from './utils/api'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
-
-function App() {
+function AppInner() {
+  const authFetch = useAuthFetch()
+  const { user } = useUser()
+  const { openUserProfile } = useClerk()
   const [stats, setStats] = useState(null)
   const [activities, setActivities] = useState([])
   const [userQuests, setUserQuests] = useState([])
@@ -54,8 +57,8 @@ function App() {
 
       // Fetch stats and activities in parallel
       const [statsResponse, activitiesResponse] = await Promise.all([
-        fetch(`${API_BASE_URL}/stats`),
-        fetch(`${API_BASE_URL}/activities`)
+        authFetch(`${API_BASE_URL}/stats`),
+        authFetch(`${API_BASE_URL}/activities`)
       ])
 
       if (!statsResponse.ok) {
@@ -93,11 +96,8 @@ function App() {
       setSubmitting(true)
       setError(null)
 
-      const response = await fetch(`${API_BASE_URL}/activities`, {
+      const response = await authFetch(`${API_BASE_URL}/activities`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           description,
           xp_earned: parseInt(xpEarned),
@@ -133,7 +133,7 @@ function App() {
 
   const fetchUserQuests = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/user-quests`)
+      const response = await authFetch(`${API_BASE_URL}/user-quests`)
       const data = await response.json()
       if (!data.error) {
         setUserQuests(data.user_quests || [])
@@ -284,6 +284,11 @@ function App() {
             <button onClick={() => handleViewChange('quests')}>QUESTS</button>
             <button onClick={() => handleViewChange('quest-chat')}>CREATE QUEST</button>
           </nav>
+          <div className="user-section">
+            <button className="user-button" onClick={() => openUserProfile()}>
+              {user?.firstName}
+            </button>
+          </div>
         </header>
 
         {error && (
@@ -344,7 +349,7 @@ function App() {
                   <button 
                     className="quest-hud-link"
                     onClick={() => {
-                      fetch(`${API_BASE_URL}/quests`)
+                      authFetch(`${API_BASE_URL}/quests`)
                         .then(r => r.json())
                         .then(data => {
                           const quest = data.quests.find(q => q.id === activeQuest.quest_id)
@@ -515,6 +520,21 @@ function App() {
       {previousView && previousView !== 'home' && renderView(previousView, previousQuest, true)}
       {renderView('home', null, false)}
     </div>
+  )
+}
+
+function App() {
+  return (
+    <>
+      <SignedOut>
+        <div className="auth-screen">
+          <SignIn />
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <AppInner />
+      </SignedIn>
+    </>
   )
 }
 

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import './Quests.css'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+import { API_BASE_URL, useAuthFetch } from './utils/api'
 
 function Quests({ onSelectQuest, userQuests, onBack, onNavigateToChat }) {
+  const authFetch = useAuthFetch()
   const [quests, setQuests] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -15,7 +15,7 @@ function Quests({ onSelectQuest, userQuests, onBack, onNavigateToChat }) {
   const fetchQuests = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${API_BASE_URL}/quests`)
+      const response = await authFetch(`${API_BASE_URL}/quests`)
       const data = await response.json()
 
       if (data.error) {

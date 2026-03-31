@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import './QuestDetail.css'
 import { extractDominantColor } from './utils/colorExtractor'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+import { API_BASE_URL, useAuthFetch } from './utils/api'
 
 // Final Fantasy Victory Fanfare - Classic quest completion/level up sound
 // This is the iconic "Victory Fanfare" that plays when you win battles or level up in Final Fantasy
@@ -16,6 +15,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 const QUEST_SUCCESS_SOUND = '/sounds/ff-victory.mp3'
 
 function QuestDetail({ quest, onBack, onRefresh }) {
+  const authFetch = useAuthFetch()
   const [userQuest, setUserQuest] = useState(null)
   const [loading, setLoading] = useState(true)
   const [completing, setCompleting] = useState(null)
@@ -93,7 +93,7 @@ function QuestDetail({ quest, onBack, onRefresh }) {
   const fetchUserQuest = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${API_BASE_URL}/user-quests`)
+      const response = await authFetch(`${API_BASE_URL}/user-quests`)
       const data = await response.json()
 
       if (data.error) {
@@ -112,9 +112,8 @@ function QuestDetail({ quest, onBack, onRefresh }) {
   const startQuest = async () => {
     try {
       setError(null)
-      const response = await fetch(`${API_BASE_URL}/user-quests`, {
+      const response = await authFetch(`${API_BASE_URL}/user-quests`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quest_id: quest.id })
       })
 
@@ -134,9 +133,8 @@ function QuestDetail({ quest, onBack, onRefresh }) {
     try {
       setCompleting(stepId)
       setError(null)
-      const response = await fetch(`${API_BASE_URL}/quest-steps`, {
+      const response = await authFetch(`${API_BASE_URL}/quest-steps`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quest_step_id: stepId })
       })
 
@@ -226,9 +224,8 @@ function QuestDetail({ quest, onBack, onRefresh }) {
     try {
       setUncompleting(stepId)
       setError(null)
-      const response = await fetch(`${API_BASE_URL}/quest-steps`, {
+      const response = await authFetch(`${API_BASE_URL}/quest-steps`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quest_step_id: stepId })
       })
 
