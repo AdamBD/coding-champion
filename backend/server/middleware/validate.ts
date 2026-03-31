@@ -4,8 +4,10 @@ import { verifyToken } from '@clerk/backend'
 export default eventHandler(async (event) => {
   const path = getRequestURL(event).pathname
 
-  // Skip OPTIONS (CORS preflight) and health check
-  if (event.method === 'OPTIONS' || path === '/api/health') return
+  // Skip OPTIONS (CORS preflight), health check, and thumbnail images
+  if (event.method === 'OPTIONS') return
+  if (path === '/api/health') return
+  if (path.match(/^\/api\/quests\/\d+\/thumbnail/)) return
 
   // Only protect /api routes
   if (!path.startsWith('/api')) return
